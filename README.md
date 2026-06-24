@@ -26,6 +26,16 @@ This system generates **6 files** that encode everything an agent needs to contr
 | `contribution_patterns.md` | How successful PRs get merged + contributor playbook | Agent follows winning patterns |
 
 ---
+## Before v/s After
+
+### Before using Precedent:
+
+<img width="1019" height="795" alt="Screenshot 2026-06-24 174105" src="https://github.com/user-attachments/assets/1d8f7635-377e-4fe9-a673-588b96cdb0ee" />
+
+### After using Precedent:
+
+<img width="1048" height="794" alt="Screenshot 2026-06-24 174145" src="https://github.com/user-attachments/assets/a3f2cab8-4877-414e-b3d4-e227ec437a73" />
+
 
 ## How It Works
 
