@@ -1,6 +1,6 @@
 # Repo Wiki Generator
 
-A self-contained agent system that ingests any GitHub repository's history (PRs, issues, chat logs) and produces a comprehensive 6-file institutional wiki. This wiki becomes the permanent memory for AI agents contributing to that repo — no more starting from scratch every session.
+A self-contained agent system that ingests any GitHub repository's history (PRs, issues, chat logs) and produces a comprehensive 6-file institutional wiki. This wiki becomes the permanent memory for AI agents contributing to that repo no more starting from scratch every session.
 
 ## The Problem
 
