@@ -1,0 +1,10 @@
+{
+  "repo": "owner/repo-name",
+  "project_name": "repo-name",
+  "pr_count": 50,
+  "include_issues": false,
+  "include_chat_logs": true,
+  "created_at": "2026-06-24T12:00:00Z",
+  "output_path": "./wiki-output/output",
+  "notes": "Edit this file before running the orchestrator. See README.md for all options."
+}
