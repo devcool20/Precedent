@@ -1,0 +1,43 @@
+.claude/agents/pr_reviewer.md
+  s_b96fd7b7717036::t_63fa45edc1d397 1-74
+.claude/agents/test_gap.md
+  s_b96fd7b7717036::t_89f1152989d9af 1-55
+.claude/agents/precedent-run.md
+  s_b96fd7b7717036::t_59ce09112e551d 1-79
+.claude/agents/repo_expert.md
+  s_b96fd7b7717036::t_88437248d594d3 1-27
+.claude/agents/mergeability_gate.md
+  s_b96fd7b7717036::t_d9598e1e375583 1-77
+.claude/agents/assumption_hunter.md
+  s_b96fd7b7717036::t_e872d1dd65dd5b 1-71
+README.md
+  s_b96fd7b7717036::t_78d65c3602357f 1,41,43-44
+  s_b96fd7b7717036::t_c4dcbcd79b8099 49-50,52-57,59-72,74-111
+  s_b96fd7b7717036::t_e2e4adc7100ec0 335,337-341,343-344
+  s_b96fd7b7717036::t_e8f33d30b42ba5 210,214
+  s_b96fd7b7717036::t_3ec508432058f6 180,182,184,186-206
+  s_b96fd7b7717036::t_45755118cf2441 303,305-312,314,316-320,323,325-329
+  s_b96fd7b7717036::t_2e7fd1064f2803 348,352-356,358-363,367-369
+  s_b96fd7b7717036::t_ffd49009a998b8 126,129-139
+  s_b96fd7b7717036::t_45bcefa3a4e22b 375-384
+.claude/agents/wiki-orchestrator.md
+  s_b96fd7b7717036::t_2acff6d063095e 3,6
+.claude/agents/maintainer.md
+  s_b96fd7b7717036::t_458bd8faa70915 1-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "af524587925965903d0790c0dcb698d3ae50e7d0",
+  "prompts": {},
+  "sessions": {
+    "s_b96fd7b7717036": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_15074235effeD89s3EivSMQdF0",
+        "model": "unknown"
+      },
+      "human_author": "devcool20 <sharmadivyanshu265@gmail.com>"
+    }
+  }
+}
