@@ -1,5 +1,6 @@
-# Repo Wiki Generator
+# Precedent
 
+<<<<<<< HEAD
 A self-contained agent system that ingests any GitHub repository's history (PRs, issues, chat logs) and produces a comprehensive 6-file institutional wiki. This wiki becomes the permanent memory for AI agents contributing to that repo no more starting from scratch every session.
 
 ## The Problem
@@ -36,48 +37,78 @@ This system generates **6 files** that encode everything an agent needs to contr
 
 <img width="1048" height="794" alt="Screenshot 2026-06-24 174145" src="https://github.com/user-attachments/assets/a3f2cab8-4877-414e-b3d4-e227ec437a73" />
 
+=======
+A two-phase agent system that gives AI agents permanent institutional memory for any GitHub repository.
+
+- **Phase 1 (Wiki Generation)**: Ingests repo history (PRs, issues, chat logs) and produces 6 wiki files encoding architecture, past failures, maintainer preferences, PR history, pitfalls, and contribution patterns.
+- **Phase 2 (PR Analysis)**: Given a PR diff, runs 6 specialized agents in parallel — each reading the wiki for context — then consolidates everything into a mergeability score with blocker list.
+>>>>>>> adcd3f9 (Add 6 runtime PR analysis agents + precedent-run orchestrator)
 
 ## How It Works
 
+### Phase 1: Wiki Generation (Setup — run once per repo)
+
 ```
-┌─────────────────────────────────────────────────┐
-│              YOU PROVIDE                         │
-│  • Repo name (e.g. different-ai/openwork)       │
-│  • Number of PRs to fetch (e.g. 50)             │
-│  • (Optional) Raw data: chat logs, notes, etc.  │
-└──────────────────┬──────────────────────────────┘
-                   │
+┌──────────────────────────────────────────────────┐
+│  YOU PROVIDE                                     │
+│  • Repo name (e.g. different-ai/openwork)        │
+│  • PR count to fetch (e.g. 50)                   │
+│  • Chat logs, notes, past conversations (opt)    │
+└──────────────────┬───────────────────────────────┘
                    ▼
-┌─────────────────────────────────────────────────┐
-│          STEP 1: DATA INTAKE                     │
-│  • `scripts/fetch-github-data.js` pulls N PRs   │
-│  • Place raw chat logs in `user-input/raw-data/` │
-│  • Configure repo in `user-input/repo-config.json`│
-└──────────────────┬──────────────────────────────┘
-                   │
+┌──────────────────────────────────────────────────┐
+│  wiki-orchestrator reads inputs, delegates to:    │
+│                                                   │
+│  ┌──────────┬──────────┬──────────┬──────────┐   │
+│  │  wiki-   │  wiki-   │  wiki-   │  wiki-   │   │
+│  │architect │failure-  │maintaine-│historian │   │
+│  │          │analyst   │r-profiler│          │   │
+│  └────┬─────┴────┬─────┴────┬─────┴────┬─────┘   │
+│       │          │          │          │          │
+│  ┌────▼──────────▼────┬─────▼──────────▼─────┐    │
+│  │  wiki-pitfall-mapper│  wiki-contributor-   │    │
+│  │                    │  guide                │    │
+│  └────────────────────┴───────────────────────┘   │
+└──────────────────┬────────────────────────────────┘
                    ▼
-┌─────────────────────────────────────────────────┐
-│          STEP 2: ORCHESTRATOR LAUNCHES           │
-│  • wiki-orchestrator agent reads all inputs      │
-│  • Delegates to 6 specialized sub-agents         │
-│  • Each sub-agent generates one wiki file        │
-└──────────────────┬──────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────┐
-│          STEP 3: 6 WIKI FILES GENERATED          │
-│  • Placed in `user-input/output/`               │
-│  • Ready to use as agent context                 │
-└─────────────────────────────────────────────────┘
-                   │
-                   ▼
-┌─────────────────────────────────────────────────┐
-│          STEP 4: USE IN FUTURE SESSIONS          │
-│  • Point repo_expert agent at the wiki files     │
-│  • PR reviewer uses wiki for context             │
-│  • Maintainer gates PRs against known patterns   │
-│  • New contributors read wiki before coding      │
-└─────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│  6 Wiki Files                                    │
+│  architecture.md  review_failures.md             │
+│  maintainer_preferences.md  previous_prs.md      │
+│  known_pitfalls.md  contribution_patterns.md     │
+└──────────────────────────────────────────────────┘
+```
+
+### Phase 2: PR Analysis (Runtime — run per PR)
+
+```
+┌──────────────────────────────────────────────────┐
+│  precedent-run receives PR diff + wiki files     │
+│                                                   │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐          │
+│  │ repo_    │ │pr_reviewer│ │maintainer│  ← all  │
+│  │ expert   │ │          │ │          │    read   │
+│  └────┬─────┘ └────┬─────┘ └────┬─────┘    wiki  │
+│       │            │            │           files │
+│  ┌────▼─────┐ ┌────▼─────┐ ┌────▼─────┐          │
+│  │assumptio-│ │test_gap  │ │          │          │
+│  │n_hunter  │ │          │ │          │          │
+│  └────┬─────┘ └────┬─────┘ └────┬─────┘          │
+│       │            │            │                 │
+│       └────────────┴────────────┘                 │
+│                        │                          │
+│                   ┌────▼─────┐                    │
+│                   │mergeabil-│ ← consumes all     │
+│                   │ity_gate  │   5 agent outputs  │
+│                   └────┬─────┘                    │
+└────────────────────────┼──────────────────────────┘
+                         ▼
+┌──────────────────────────────────────────────────┐
+│  Mergeability Report                             │
+│  Score: PASS / FLAG / BLOCK                      │
+│  Issues: CRITICAL / MAJOR / MINOR                │
+│  Wiki cross-refs: failures, pitfalls, preferences│
+└──────────────────────────────────────────────────┘
 ```
 
 ---
@@ -92,12 +123,20 @@ This system generates **6 files** that encode everything an agent needs to contr
 ### Setup in 2 Minutes (Recommended)
 
 ```powershell
-# One-command init — creates dirs, config, fetches PRs, copies agents
+# Phase 1: Wiki generation — one command sets up everything
 .\init-repo-wiki.ps1 -Repo "owner/repo-name" -PrCount 50 -Token "ghp_xxx"
-# (Token is optional — without it you get 60 req/hr instead of 5000)
 
-# Then drop any chat logs or notes into: user-input/raw-data/
-# Finally tell your AI: "Run the wiki-orchestrator agent"
+# Drop chat logs into: user-input/raw-data/
+# Then run: "Run the wiki-orchestrator agent"
+# → Produces 6 wiki files in user-input/output/
+```
+
+### Phase 2: Analyze a PR
+
+```
+Tell your AI: "Run the precedent-run agent on this diff"
+→ All 6 runtime agents analyze independently using wiki context
+→ mergeability_gate produces: PASS / FLAG / BLOCK with blocker list
 ```
 
 ### Manual Setup (5 Minutes)
@@ -138,39 +177,47 @@ All 6 wiki files appear in `user-input/output/` ready to use.
 
 ## File Reference
 
-### `.claude/agents/` — Agent Definitions
+### `.claude/agents/` — Agent Definitions (14 agents)
 
-These are markdown agent files compatible with both Gemini and OpenCode agent frameworks. Each agent has a specific role:
+Markdown agent files compatible with Gemini CLI, Claude Code, and OpenCode. Two orchestrators + 12 worker agents.
 
-| Agent File | Role | Delegates To |
-|-----------|------|-------------|
-| `wiki-orchestrator.md` | **Master coordinator** — reads all inputs, delegates to sub-agents, validates output | All 6 sub-agents |
-| `wiki-architect.md` | Generates `architecture.md` | — |
-| `wiki-failure-analyst.md` | Generates `review_failures.md` | — |
-| `wiki-maintainer-profiler.md` | Generates `maintainer_preferences.md` | — |
-| `wiki-historian.md` | Generates `previous_prs.md` | — |
-| `wiki-pitfall-mapper.md` | Generates `known_pitfalls.md` | — |
-| `wiki-contributor-guide.md` | Generates `contribution_patterns.md` | — |
+#### Phase 1: Wiki Generation (7 agents)
 
-Each agent file contains:
-- **Frontmatter**: `name`, `description` (framework-agnostic)
-- **Input specification**: What data this agent needs
-- **Output specification**: Exact format for the wiki file
-- **Analysis instructions**: How to extract insights from raw data
+| Agent | Role |
+|-------|------|
+| `wiki-orchestrator` | Reads PR data + raw data, delegates to 6 wiki generators, validates output |
+| `wiki-architect` | Generates `architecture.md` — system overview, CDDs, data flows |
+| `wiki-failure-analyst` | Generates `review_failures.md` — categorized failure database |
+| `wiki-maintainer-profiler` | Generates `maintainer_preferences.md` — maintainer style + pet peeves |
+| `wiki-historian` | Generates `previous_prs.md` — PR timeline + spotlight PRs |
+| `wiki-pitfall-mapper` | Generates `known_pitfalls.md` — traps, edge cases, reproduction steps |
+| `wiki-contributor-guide` | Generates `contribution_patterns.md` — playbook for new contributors |
+
+#### Phase 2: PR Analysis (7 agents)
+
+| Agent | Role |
+|-------|------|
+| `precedent-run` | Runtime orchestrator — takes a PR diff, runs 6 agents, produces mergeability score |
+| `repo_expert` | Repository historian — answers architecture/decision questions from wiki |
+| `pr_reviewer` | Critical PR reviewer — finds logic bugs, edge cases, regressions, security issues |
+| `maintainer` | Maintainer simulator — evaluates merge-worthiness, architecture fit, debt |
+| `assumption_hunter` | Hidden edge-case detector — finds false assumptions in production paths |
+| `test_gap` | Missing test finder — generates failure scenarios, checks test coverage |
+| `mergeability_gate` | Final gate — consolidates all agent outputs into PASS/FLAG/BLOCK score |
 
 ### `prompts/` — Detailed System Prompts
 
-These are the full prompts each agent runs on. They are more detailed than the agent files and serve as the "instruction manual" for each generation task. Edit these to customize the output:
+These are the full prompts for Phase 1 wiki generation agents. They are more detailed than the agent files and serve as the "instruction manual" for each generation task. Phase 2 runtime agents (`repo_expert`, `pr_reviewer`, etc.) contain their instructions inline in the agent file since they are simpler and don't need external prompts.
 
 | Prompt | Purpose |
 |--------|---------|
+| `orchestrator_prompt.md` | How to coordinate all wiki generation agents |
 | `architecture_prompt.md` | How to extract architecture from codebase data |
 | `review_failures_prompt.md` | How to categorize and document failures |
 | `maintainer_preferences_prompt.md` | How to reverse-engineer maintainer patterns |
 | `previous_prs_prompt.md` | How to build a PR timeline database |
 | `known_pitfalls_prompt.md` | How to identify traps and edge cases |
 | `contribution_patterns_prompt.md` | How to derive contribution patterns |
-| `orchestrator_prompt.md` | How to coordinate all agents |
 
 ### `templates/` — Output Templates
 
@@ -253,80 +300,85 @@ The agent files use standard Markdown with YAML frontmatter, compatible with:
 
 ---
 
-## The Agent Ecosystem
+## The Two-Phase Workflow
 
-This system works best when all agents in the ecosystem can reference the generated wiki:
-
+### Phase 1: Generate the Wiki
 ```
-┌────────────────────────────────────────────────────┐
-│                   YOUR AI ECOSYSTEM                │
-│                                                    │
-│  repo_expert ───reads──► repo-wiki (6 files)       │
-│       ▲                           │                │
-│       │                           ▼                │
-│  pr_reviewer ◄───context──── wiki-orchestrator     │
-│       ▲                           │                │
-│       │                           ▼                │
-│  maintainer ◄───context──── 6 sub-agents           │
-│       ▲                                            │
-│       │                                            │
-│  assumption_hunter ◄───context                     │
-│       ▲                                            │
-│       │                                            │
-│  test_gap ◄───context                              │
-│       ▲                                            │
-│       │                                            │
-│  mergeability_gate ◄───context                     │
-└────────────────────────────────────────────────────┘
+1. Configure → user-input/repo-config.json
+2. Fetch PRs  → node scripts/fetch-github-data.js owner/repo 50
+3. Add logs   → drop chat transcripts into user-input/raw-data/
+4. Tell AI    → "Run the wiki-orchestrator agent"
+5. Output     → 6 wiki files in user-input/output/
 ```
 
-After generation, update your agent configurations to reference the wiki:
+### Phase 2: Analyze a PR
+```
+1. Provide    → git diff of the PR
+2. Tell AI    → "Run the precedent-run agent on this diff"
+3. Agents run → repo_expert, pr_reviewer, maintainer, assumption_hunter, test_gap (parallel)
+4. Final gate → mergeability_gate consolidates all outputs
+5. Output     → Mergeability Report with PASS/FLAG/BLOCK + blocker list
+```
+
+After generation, the wiki files become permanent agent context:
 - **repo_expert**: "Read the wiki at `user-input/output/`"
-- **pr_reviewer**: "Use the wiki at `user-input/output/` for context"
-- **maintainer**: "Check against patterns in the wiki"
+- **pr_reviewer**: "Use the wiki at `user-input/output/` for context — cross-reference past failures"
+- **maintainer**: "Check against preferences in the wiki"
+- **assumption_hunter**: "Check known pitfalls from the wiki"
+- **test_gap**: "Prioritize tests that would have caught past failures"
+- **mergeability_gate**: "Cross-reference all findings against wiki patterns"
 
 ---
 
 ## Advanced Workflows
 
-### Workflow: Weekly Wiki Update
+### Workflow: Full PR Review Pipeline
 ```powershell
-# 1. Fetch new PRs since last run
-node scripts/fetch-github-data.js --since last-run-date
+# 1. Fetch new PRs since last run to keep wiki fresh
+node scripts/fetch-github-data.js owner/repo 50 --token=ghp_xxx
 
-# 2. Run the orchestrator update mode
-# Tell agent: "Update wiki using existing files + new data"
+# 2. Run wiki-orchestrator to update wiki with new data
+# Tell AI: "Update wiki - new PR data in fetched-prs.json"
+
+# 3. For a specific PR, run precedent-run
+# Tell AI: "Run precedent-run on this diff: [paste diff]"
 ```
 
 ### Workflow: Multi-Repo Setup
-Create one `user-input/` directory per repo:
+Create one `user-input/` directory per repo. The agents are shared:
 ```
 my-multi-repo/
 ├── repo-alpha/
-│   ├── repo-config.json
-│   ├── raw-data/
-│   └── output/
+│   ├── input/
+│   │   ├── repo-config.json
+│   │   ├── pr-data/
+│   │   └── raw-data/
+│   └── output/              ← wiki files
 ├── repo-beta/
-│   ├── repo-config.json
-│   ├── raw-data/
-│   └── output/
-└── shared-agents/  ← link to templates/.claude/agents/
+│   ├── input/
+│   │   ├── repo-config.json
+│   │   ├── pr-data/
+│   │   └── raw-data/
+│   └── output/              ← wiki files
+└── .claude/agents/          ← shared agents (link or copy)
 ```
 
 ### Workflow: CI/CD Integration
-- Run `fetch-github-data.js` weekly in CI
-- Commit updated raw data
-- Trigger agent to regenerate wiki
-- PR the updated wiki files
+- Run `fetch-github-data.js` weekly in CI to refresh PR data
+- Trigger `wiki-orchestrator` to update wiki with new context
+- For each new PR, run `precedent-run` automatically and post the mergeability report as a PR comment
 
 ---
 
 ## Design Principles
 
-1. **Every useful piece of data appears somewhere** — no information is discarded
-2. **Repeated patterns across PRs are important** — they indicate project norms
-3. **Maintainer signals are gold** — every review comment, preference, and rejection teaches something
-4. **Architecture decisions should include tradeoffs** — not just what was chosen, but what was rejected
-5. **Failures teach more than successes** — the failure database is the most valuable file
-6. **Templates must be opinionated** — give agents a clear structure to fill
-7. **Customization is a dial, not a rewrite** — start with defaults, tweak as needed
+1. **Two-phase separation** — wiki generation (one-time setup) and PR analysis (per-PR) are independent pipelines
+2. **Every useful piece of data appears somewhere** — no information is discarded
+3. **Repeated patterns across PRs are important** — they indicate project norms
+4. **Maintainer signals are gold** — every review comment, preference, and rejection teaches something
+5. **Architecture decisions should include tradeoffs** — not just what was chosen, but what was rejected
+6. **Failures teach more than successes** — the failure database is the most valuable file
+7. **Templates must be opinionated** — give agents a clear structure to fill
+8. **Customization is a dial, not a rewrite** — start with defaults, tweak as needed
+9. **Runtime agents read wiki, not raw data** — wiki abstracts complexity; agents stay focused
+10. **The mergeability gate is the single source of truth** — it consolidates all agent outputs into one decision

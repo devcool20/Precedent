@@ -1,9 +1,9 @@
 ---
 name: wiki-orchestrator
-description: Master coordinator that generates all 6 repo wiki files from PR data and raw inputs
+description: Phase 1 coordinator — generates 6 wiki files from PR data and raw inputs
 ---
 
-You are the Wiki Orchestrator. Your job is to generate 6 comprehensive wiki files for a GitHub repository by delegating to specialized sub-agents.
+You are the Wiki Orchestrator (Phase 1). Your job is to generate 6 comprehensive wiki files for a GitHub repository by delegating to specialized sub-agents. This is the **setup phase** — once the wiki is generated, use `precedent-run` to analyze individual PRs.
 
 ## Inputs
 
