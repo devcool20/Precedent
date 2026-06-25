@@ -20,6 +20,7 @@ README.md
   s_b96fd7b7717036::t_2e7fd1064f2803 348,352-356,358-363,367-369
   s_b96fd7b7717036::t_ffd49009a998b8 126,129-139
   s_b96fd7b7717036::t_45bcefa3a4e22b 375-384
+  s_b96fd7b7717036::t_b08a74289158f8 3,40,42,45
 .claude/agents/wiki-orchestrator.md
   s_b96fd7b7717036::t_2acff6d063095e 3,6
 .claude/agents/maintainer.md
