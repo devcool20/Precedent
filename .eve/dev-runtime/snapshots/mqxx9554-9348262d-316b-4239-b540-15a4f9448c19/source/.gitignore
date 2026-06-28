@@ -1,0 +1,7 @@
+examples/
+user-input/output/
+user-input/raw-data/
+node_modules/
+*.json
+!user-input/repo-config.json
+!examples/openwork/pr-data-example.json

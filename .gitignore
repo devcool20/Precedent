@@ -5,3 +5,7 @@ node_modules/
 *.json
 !user-input/repo-config.json
 !examples/openwork/pr-data-example.json
+
+
+.env
+.env.local
